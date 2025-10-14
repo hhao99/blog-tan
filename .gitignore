@@ -1,0 +1,10 @@
+node_modules
+.env
+.direnv
+.cache
+.tanstack
+.output
+.DS_Store
+data/tmp
+*.lock
+
