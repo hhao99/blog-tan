@@ -32,9 +32,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <div className="w-full h-screen flex flex-col justify-between">
+      <div className="size-full flex flex-col justify-between">
         <Header />
-        <main className="w-full h-full">
+        <main className="w-full h-lvh">
           <Outlet />
         </main>
         <Footer />
