@@ -9,14 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PostsRouteImport } from './routes/posts'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthdRouteImport } from './routes/_authd'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
 import { Route as PostsIdRouteImport } from './routes/posts.$id'
+import { Route as AuthdPostsNewRouteImport } from './routes/_authd/posts.new'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PostsRoute = PostsRouteImport.update({
   id: '/posts',
   path: '/posts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthdRoute = AuthdRouteImport.update({
+  id: '/_authd',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,45 +52,100 @@ const PostsIdRoute = PostsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => PostsRoute,
 } as any)
+const AuthdPostsNewRoute = AuthdPostsNewRouteImport.update({
+  id: '/posts/new',
+  path: '/posts/new',
+  getParentRoute: () => AuthdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/posts': typeof PostsRouteWithChildren
+  '/register': typeof RegisterRoute
   '/posts/$id': typeof PostsIdRoute
   '/posts/': typeof PostsIndexRoute
+  '/posts/new': typeof AuthdPostsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/posts/$id': typeof PostsIdRoute
   '/posts': typeof PostsIndexRoute
+  '/posts/new': typeof AuthdPostsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authd': typeof AuthdRouteWithChildren
+  '/login': typeof LoginRoute
   '/posts': typeof PostsRouteWithChildren
+  '/register': typeof RegisterRoute
   '/posts/$id': typeof PostsIdRoute
   '/posts/': typeof PostsIndexRoute
+  '/_authd/posts/new': typeof AuthdPostsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/posts' | '/posts/$id' | '/posts/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/posts'
+    | '/register'
+    | '/posts/$id'
+    | '/posts/'
+    | '/posts/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/posts/$id' | '/posts'
-  id: '__root__' | '/' | '/posts' | '/posts/$id' | '/posts/'
+  to: '/' | '/login' | '/register' | '/posts/$id' | '/posts' | '/posts/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authd'
+    | '/login'
+    | '/posts'
+    | '/register'
+    | '/posts/$id'
+    | '/posts/'
+    | '/_authd/posts/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthdRoute: typeof AuthdRouteWithChildren
+  LoginRoute: typeof LoginRoute
   PostsRoute: typeof PostsRouteWithChildren
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/posts': {
       id: '/posts'
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof PostsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authd': {
+      id: '/_authd'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -96,8 +169,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIdRouteImport
       parentRoute: typeof PostsRoute
     }
+    '/_authd/posts/new': {
+      id: '/_authd/posts/new'
+      path: '/posts/new'
+      fullPath: '/posts/new'
+      preLoaderRoute: typeof AuthdPostsNewRouteImport
+      parentRoute: typeof AuthdRoute
+    }
   }
 }
+
+interface AuthdRouteChildren {
+  AuthdPostsNewRoute: typeof AuthdPostsNewRoute
+}
+
+const AuthdRouteChildren: AuthdRouteChildren = {
+  AuthdPostsNewRoute: AuthdPostsNewRoute,
+}
+
+const AuthdRouteWithChildren = AuthdRoute._addFileChildren(AuthdRouteChildren)
 
 interface PostsRouteChildren {
   PostsIdRoute: typeof PostsIdRoute
@@ -113,7 +203,10 @@ const PostsRouteWithChildren = PostsRoute._addFileChildren(PostsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthdRoute: AuthdRouteWithChildren,
+  LoginRoute: LoginRoute,
   PostsRoute: PostsRouteWithChildren,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

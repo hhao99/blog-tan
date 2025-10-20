@@ -5,18 +5,26 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build"
+    "build": "vite build",
+    "migrate": "prisma migrate",
+    "generate": "prisma generate",
+    "pinit": "prisma init",
+    "push": "prisma db push",
+    "studio": "prisma studio",
+    "seed": "tsx src/lib/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.18.2",
   "dependencies": {
+    "@prisma/client": "^6.17.1",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-devtools": "^1.133.0",
     "@tanstack/react-start": "^1.132.56",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
@@ -24,7 +32,9 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.0.4",
+    "prisma": "^6.17.1",
     "tailwindcss": "^4.1.14",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
     "vite-tsconfig-paths": "^5.1.4"

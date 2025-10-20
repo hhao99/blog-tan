@@ -9,17 +9,18 @@ export const Route = createFileRoute('/posts')({
 function PostComponent() {
  const posts = Route.useLoaderData();
   return (
-    <main className="flex mt-2 border-t-1 border-blue-800 flex-row justify-between">
-      <div className='flex flex-col bg-bray-200 h-80vh w-1/5 border-r-1 border-gray-800'>
-        <h1 className='text-xl text-blue-600 border-b-1 border-gray-200'>Post Index</h1>
+    <main className="flex mt-2 border-1 border-gray-100 flex-row justify-between">
+      <div className='flex flex-col bg-bray-200 h-4/5 w-1/5 '>
+        <h1 className='text-xl text-blue-600 text-center'>Post Index</h1>
         <div>
-          {posts.map( (post,index)=> (<div>
+          {posts.map( (post)=> (
+            <div key={`post-${post.id}`} className='border-b border-gray-400'>
             <Link to="/posts/$id" 
               params={{
                 id: String(post.id)
               }}
-              key={`post-${index}`}
-            >{post.title}</Link>
+              className='block p-2 hover:bg-gray-300'
+            >{post.content}</Link>
           </div>))}
         </div>
       </div>

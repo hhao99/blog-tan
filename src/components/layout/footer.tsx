@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+
 export default function Footer() {
     return (
         <div className="w-full mx-auto">

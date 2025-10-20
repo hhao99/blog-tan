@@ -1,3 +1,5 @@
+// src/components/layout/header.tsx
+/** Header component for the blog layout */
 import { Link } from '@tanstack/react-router';
 export default function Header() {
     return (
@@ -8,7 +10,7 @@ export default function Header() {
                     <Link to='/'>Home</Link>
                 </div>
                 <div>
-                    <Link to='/Posts'>Posts</Link>
+                    <Link to='/posts'>Posts</Link>
                 </div>
             </nav>
         </div>

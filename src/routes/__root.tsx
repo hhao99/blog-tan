@@ -10,6 +10,7 @@ import './style.css';
 import Header from '~/components/layout/header';
 
 import Footer from '~/components/layout/footer';
+import NotFound from '~/components/not-found';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -27,6 +28,7 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
+  notFoundComponent: ()=> <NotFound />
 })
 
 function RootComponent() {
