@@ -83,7 +83,7 @@ export const Login = ({action}: {action: string}) => {
                     </label>
                 </div>
                 <div>
-                    <button type='submit'
+                    <button type='submit' onClick={()=> {console.log('submitting')  }}
                     className='w-full bg-blue-300 text-white rounded py-2 font-semibold uppercase'
                     >{action==='signin'?"Login": "Register"}</button>
                 </div>

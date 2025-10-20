@@ -20,7 +20,7 @@ function PostComponent() {
                 id: String(post.id)
               }}
               className='block p-2 hover:bg-gray-300'
-            >{post.content}</Link>
+            >{post.frontmatter.title || 'Untitled'}</Link>
           </div>))}
         </div>
       </div>

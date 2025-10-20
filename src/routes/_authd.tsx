@@ -48,7 +48,7 @@ export const LoginFn = createServerFn({method: "POST"})
       const session = await useAppSession()
       await session.update({
         email: email,
-        id: result.id,
+        user_id: result.id,
         firstname: result.firstname,
         lastname: result.lastname
       });
@@ -88,5 +88,6 @@ export const LoginFn = createServerFn({method: "POST"})
         email: session.data.email,
         firstname: session.data.firstname,
         lastname: session.data.lastname,
+        id: session.data.user_id
       }
     })

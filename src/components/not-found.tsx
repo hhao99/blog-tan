@@ -1,6 +1,6 @@
 import { useRouter, Link } from '@tanstack/react-router';
 
-/*
+/*** 
     A simple Not Found component that can be used across the app.
 
     Props:
@@ -8,7 +8,7 @@ import { useRouter, Link } from '@tanstack/react-router';
 
     Usage:
     <NotFound>Your custom message here.</NotFound>
-*/
+***/
 
 
 export default function NotFound({children}: {children: any}) {
