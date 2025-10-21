@@ -7,10 +7,16 @@ const Tiptap = ({ content, onChange }: { content: string; onChange: (value: stri
     const editor = useEditor({
         extensions: [StarterKit], // define your extension array
         content, // initial content
+        coreExtensionOptions: {
+          clipboardTextSerializer: {
+            blockSeparator: '\n',
+            },
+        },
         onUpdate: ({ editor }) => {
-          onChange(editor.getText({blockSeparator: '\n'}))
+          onChange(editor.getText());
         },
         immediatelyRender: false,
+        shouldRerenderOnTransaction: true,
         editorProps: {
           attributes: {
             class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
