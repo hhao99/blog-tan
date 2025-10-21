@@ -6,9 +6,11 @@ import { useAppSession } from '~/lib/session';
 import { prisma } from '~/lib/prisma';
 
 export const Route = createFileRoute('/_authd')({
-  beforeLoad: ({context})=> {
-    console.log('authd session info: ')
-    console.log(context);
+  beforeLoad: async ()=> {
+    const user = fetchUser();
+    if(!user.id) {
+      throw redirect({ href: '/login' });
+    }
   }
 })
 
@@ -58,13 +60,19 @@ export const LoginFn = createServerFn({method: "POST"})
       }
     }
   });
+  export const LogoutFn = createServerFn({method: "POST"})
+    .handler( async ()=> {
+      const session = await useAppSession();
+      await session.clear();
+      throw redirect({ href: '/' });
+    });
   export const SignupFn = createServerFn({method: "POST"})
     .inputValidator(SignupSchema)
     .handler(async ({data: {firstname, lastname, email, password}})=>{
       
       // todo: hashed password
       const result = await prisma.user.findUnique({where: { email}});
-      if( result ) {
+      if(result ) {
         return {
           error: true,
           userExists: true,

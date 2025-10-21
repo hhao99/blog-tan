@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PostsRouteImport } from './routes/posts'
+import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthdRouteImport } from './routes/_authd'
 import { Route as IndexRouteImport } from './routes/index'
@@ -26,6 +27,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const PostsRoute = PostsRouteImport.update({
   id: '/posts',
   path: '/posts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -61,6 +67,7 @@ const AuthdPostsNewRoute = AuthdPostsNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/posts': typeof PostsRouteWithChildren
   '/register': typeof RegisterRoute
   '/posts/$id': typeof PostsIdRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
   '/posts/$id': typeof PostsIdRoute
   '/posts': typeof PostsIndexRoute
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authd': typeof AuthdRouteWithChildren
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/posts': typeof PostsRouteWithChildren
   '/register': typeof RegisterRoute
   '/posts/$id': typeof PostsIdRoute
@@ -91,18 +100,27 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/logout'
     | '/posts'
     | '/register'
     | '/posts/$id'
     | '/posts/'
     | '/posts/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/posts/$id' | '/posts' | '/posts/new'
+  to:
+    | '/'
+    | '/login'
+    | '/logout'
+    | '/register'
+    | '/posts/$id'
+    | '/posts'
+    | '/posts/new'
   id:
     | '__root__'
     | '/'
     | '/_authd'
     | '/login'
+    | '/logout'
     | '/posts'
     | '/register'
     | '/posts/$id'
@@ -114,6 +132,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthdRoute: typeof AuthdRouteWithChildren
   LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
   PostsRoute: typeof PostsRouteWithChildren
   RegisterRoute: typeof RegisterRoute
 }
@@ -132,6 +151,13 @@ declare module '@tanstack/react-router' {
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof PostsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -205,6 +231,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthdRoute: AuthdRouteWithChildren,
   LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
   PostsRoute: PostsRouteWithChildren,
   RegisterRoute: RegisterRoute,
 }

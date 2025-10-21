@@ -1,15 +1,22 @@
  import { createServerFn } from '@tanstack/react-start';
  import { z } from 'zod';
- import matter from 'gray-matter';
+ import { parse} from 'zod-matter';
 
  import type { Post } from '~/prisma/client';
  import { prisma } from '~/lib/prisma';
  
+ export const PostFrontmatterSchema = z.object({
+    title: z.string().min(1).max(200).optional(),
+    description: z.string().min(1).max(500).optional(),
+    tags: z.array(z.string()).optional(),
+    published: z.boolean().optional(),
+    publishedAt: z.string().optional(),
+ });
 const postMatter = (post: Post) => {
-    const {data: frontmatter, content} = matter(post?.content || '' );
+    const {data, content} = parse(post?.content, PostFrontmatterSchema);
     return {
       ...post,
-      frontmatter,
+      frontmatter: data,
       content,
     };
 }

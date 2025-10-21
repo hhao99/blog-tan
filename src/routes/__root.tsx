@@ -5,6 +5,7 @@ import {
   HeadContent,
   Scripts,
 } from '@tanstack/react-router';
+import { fetchUser } from './_authd';
 import './style.css';
 
 import Header from '~/components/layout/header';
@@ -27,15 +28,24 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  loader: async ()=> {
+    const user = await fetchUser();
+    if(user) {
+      console.log("Root loader fetched user:", user);
+      return { user };
+    }
+    return null;
+  },
   component: RootComponent,
   notFoundComponent: ()=> <NotFound />
 })
 
 function RootComponent() {
+  const { user } = Route.useLoaderData();
   return (
     <RootDocument>
       <div className="size-full flex flex-col justify-between">
-        <Header />
+        <Header user={user} />
         <main className="w-full h-lvh">
           <Outlet />
         </main>

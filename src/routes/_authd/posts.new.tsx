@@ -18,7 +18,7 @@ export const Route = createFileRoute('/_authd/posts/new')({
 export function NewPost() { 
   const create = useServerFn(createPost);
   const user = Route.useLoaderData();
-  const frontmatter = "# markdown content to go here";
+  const frontmatter = '';
 
   const [content,setContent] = useState(frontmatter);
 
