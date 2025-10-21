@@ -4,16 +4,6 @@ import { useServerFn } from '@tanstack/react-start';
 import { createPost } from '~/lib/posts';
 import { fetchUser } from '../_authd';
 
-import { 
-  MDXEditor, 
-  MDXEditorMethods,
-  headingsPlugin, 
-  frontmatterPlugin,
-  listsPlugin,
-  codeBlockPlugin
-} 
-  from '@mdxeditor/editor';
-import '@mdxeditor/editor/style.css'
 
 export const Route = createFileRoute('/_authd/posts/new')({
   component: NewPost,
@@ -23,7 +13,6 @@ export const Route = createFileRoute('/_authd/posts/new')({
 export function NewPost() { 
   const create = useServerFn(createPost);
   const user = Route.useLoaderData();
-  const editorRef = useRef<MDXEditorMethods>(null)
   const frontmatter = `
 ---
 title: My New Post
@@ -57,18 +46,14 @@ title: My New Post
        <div className='flex flex-col w-4/5 justify-start items-start border-2 border-gray-300 my-4'>
          <label htmlFor="content">Content</label>
          <div className='w-full h-96 border-2 border-gray-300'>
-          <MDXEditor 
-          
-          markdown={content} 
-          onChange={(markdown)=> setContent(markdown)} 
-          plugins={[
-            headingsPlugin(), 
-            frontmatterPlugin()
-            , listsPlugin()
-            , codeBlockPlugin()
-          ]}
-          ref={editorRef}
-          />
+            <textarea
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className='w-full h-full p-2 border-2 border-gray-300'
+              cols={80}
+              rows={20}
+            />
          </div>
           
        </div>
