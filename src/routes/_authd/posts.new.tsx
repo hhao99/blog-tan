@@ -1,6 +1,11 @@
 import { useRef, useState, useActionState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
+
+//tiptap editor 
+import Tiptap from '~/components/tiptap';
+
+
 import { createPost } from '~/lib/posts';
 import { fetchUser } from '../_authd';
 
@@ -13,13 +18,8 @@ export const Route = createFileRoute('/_authd/posts/new')({
 export function NewPost() { 
   const create = useServerFn(createPost);
   const user = Route.useLoaderData();
-  const frontmatter = `
----
-title: My New Post
----
+  const frontmatter = "---\ntitle: My New Post\n---\n# markdown content to go here";
 
-# markdown content to go here
-  `;
   const [content,setContent] = useState(frontmatter);
 
   const handleSubmit = async (state,formData:FormData) => {
@@ -28,12 +28,7 @@ title: My New Post
     console.log("Post created:");
   };
 
-  const handleClick = () => {
-    if (editorRef.current) {
-      setContent(editorRef.current.getMarkdown());
-    }
-  }
-
+  
   const [state,formAction,isPending] = useActionState(handleSubmit,null)
   return (
     <div className='container m-4 p-4 border-2 border-gray-300'>
@@ -45,15 +40,8 @@ title: My New Post
       
        <div className='flex flex-col w-4/5 justify-start items-start border-2 border-gray-300 my-4'>
          <label htmlFor="content">Content</label>
-         <div className='w-full h-96 border-2 border-gray-300'>
-            <textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className='w-full h-full p-2 border-2 border-gray-300'
-              cols={80}
-              rows={20}
-            />
+         <div className='w-full h-96 p-2 border-2 border-gray-200'>
+           <Tiptap content={content} onChange={setContent} />
          </div>
           
        </div>
