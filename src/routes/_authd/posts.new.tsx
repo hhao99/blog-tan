@@ -1,28 +1,49 @@
-import { useActionState } from 'react';
-import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn, useServerFn } from '@tanstack/react-start'
+import { useRef, useState, useActionState } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
+import { useServerFn } from '@tanstack/react-start';
 import { createPost } from '~/lib/posts';
-import { create } from 'domain';
-import { z } from 'zod';
+import { fetchUser } from '../_authd';
 
+import { 
+  MDXEditor, 
+  MDXEditorMethods,
+  headingsPlugin, 
+  frontmatterPlugin,
+  listsPlugin,
+  codeBlockPlugin
+} 
+  from '@mdxeditor/editor';
+import '@mdxeditor/editor/style.css'
 
 export const Route = createFileRoute('/_authd/posts/new')({
   component: NewPost,
+  loader: async ()=> await fetchUser(),
 });
-
+  
 export function NewPost() { 
   const create = useServerFn(createPost);
-  const content = `---\n title: Sample Post\n author: John Doe \n--- \n# Hello World\n This is my first post!`
+  const user = Route.useLoaderData();
+  const editorRef = useRef<MDXEditorMethods>(null)
+  const frontmatter = `
+---
+title: My New Post
+---
+
+# markdown content to go here
+  `;
+  const [content,setContent] = useState(frontmatter);
 
   const handleSubmit = async (state,formData:FormData) => {
-    const author_id = Number(formData.get("author_id") as string);
-    const content = String(formData.get("content"));
-    console.log("creating post:", { author_id, content });
-    const result = await create({ data: { author_id, content } });
-    console.log("Post created:", result);
+    console.log("creating post:", { author_id: user.id, content });
+    const result = await create({ data: { author_id: user.id, content } });
+    console.log("Post created:");
   };
 
-  
+  const handleClick = () => {
+    if (editorRef.current) {
+      setContent(editorRef.current.getMarkdown());
+    }
+  }
 
   const [state,formAction,isPending] = useActionState(handleSubmit,null)
   return (
@@ -30,17 +51,31 @@ export function NewPost() {
       <h1 className='text-2xl text-blue-600 mb-4'>Create New Post</h1>
      <form action={formAction}>
        <div>
-         <input type="text" id="author_id" value={1} name="author_id" readOnly/>
+         <h1>created by {user?.firstname} {user?.lastname} </h1>
        </div>
       
-       <div className='flex flex-col w-4/5 justify-start items-start'>
+       <div className='flex flex-col w-4/5 justify-start items-start border-2 border-gray-300 my-4'>
          <label htmlFor="content">Content</label>
-         <textarea id="content" cols={60} rows={10} name="content" defaultValue={content}/>
-
+         <div className='w-full h-96 border-2 border-gray-300'>
+          <MDXEditor 
+          
+          markdown={content} 
+          onChange={(markdown)=> setContent(markdown)} 
+          plugins={[
+            headingsPlugin(), 
+            frontmatterPlugin()
+            , listsPlugin()
+            , codeBlockPlugin()
+          ]}
+          ref={editorRef}
+          />
+         </div>
+          
        </div>
-       <button type="submit">Create Post</button>
+       <button type="submit" >Create Post</button>
      </form>
     </div>
   )
+
 }
 

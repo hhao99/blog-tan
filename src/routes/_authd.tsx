@@ -34,6 +34,7 @@ export const LoginFn = createServerFn({method: "POST"})
         id: true,
         firstname: true,
         lastname: true,
+        email: true,
       }
     });
     if(!result) {
@@ -44,14 +45,12 @@ export const LoginFn = createServerFn({method: "POST"})
       }
     }
     if(result) {
-      console.log(`user: ${result.firstname} ${result.lastname}`)
       const session = await useAppSession()
       await session.update({
-        email: email,
-        user_id: result.id,
-        firstname: result.firstname,
-        lastname: result.lastname
+        ...result
       });
+
+      console.log("login attempt result:", result);
       return {
         error: false,
         userNotFound: false,
@@ -81,13 +80,13 @@ export const LoginFn = createServerFn({method: "POST"})
       }
     })
 
-  export const getSessionFn = createServerFn({method: "GET"})
+  export const fetchUser = createServerFn({method: "GET"})
     .handler( async ()=> {
       const session = await useAppSession();
       return {
         email: session.data.email,
         firstname: session.data.firstname,
         lastname: session.data.lastname,
-        id: session.data.user_id
+        id: session.data.id
       }
     })

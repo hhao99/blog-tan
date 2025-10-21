@@ -3,10 +3,7 @@ import { Remark } from 'react-remark';
 import { getPostById } from "~/lib/posts";
 
 export const Route = createFileRoute('/posts/$id')({
-    loader: async ({params: {id}})=> {
-      console.log('loading the post with id: ', id)
-      return await getPostById({data: {id: parseInt(id)}});
-    },
+  loader: async ({params: {id}})=> await getPostById({data: {id: parseInt(id)}}),
   component: PostComponent,
 })
 

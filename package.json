@@ -18,12 +18,12 @@
   "license": "ISC",
   "packageManager": "pnpm@10.18.2",
   "dependencies": {
+    "@mdxeditor/editor": "^3.47.0",
     "@prisma/client": "^6.17.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-devtools": "^1.133.0",
     "@tanstack/react-start": "^1.132.56",
-    "@uiw/react-markdown-editor": "^6.1.4",
     "gray-matter": "^4.0.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

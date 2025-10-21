@@ -4,10 +4,12 @@ import { Link } from '@tanstack/react-router';
 export default function Header() {
     return (
         <div className="flex bg-gray-200 text-skyblue-800 border-b-1 border-brown-200 justify-between">
-            <h1>TansStart Blog</h1>
+            <Link to='/' className="ml-4 font-bold text-xl">
+                TansStart Blog
+            </Link>
             <nav className="flex bg-gray-300 text-brown-800 space-x-4 mr-4 ">
                 <div>
-                    <Link to='/'>Home</Link>
+                    <Link to='/posts/new'>New Post</Link>
                 </div>
                 <div>
                     <Link to='/posts'>Posts</Link>
