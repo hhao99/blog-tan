@@ -7,8 +7,8 @@ import { prisma } from '~/lib/prisma';
 
 export const Route = createFileRoute('/_authd')({
   beforeLoad: async ()=> {
-    const user = fetchUser();
-    if(!user.id) {
+    const user = await fetchUser();
+    if(!user.email) {
       throw redirect({ href: '/login' });
     }
   }
