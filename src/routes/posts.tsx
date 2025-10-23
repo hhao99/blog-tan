@@ -16,14 +16,15 @@ function PostComponent() {
         <div className='flex gap-2 p-2'>
           <ul className='list-disc pl-4'>
           {posts.map( (post)=> (
-            <li key={`post-${post.id}`} className='border-b border-gray-400'>
+            <li key={`post-${post.id}`} className='w-full block flex space-x-4 hover:opacity-80 hover:bg-brown-200 border-b border-gray-400'>
             <Link to="/posts/$id" 
               params={{
                 id: String(post.id)
               }}
-              className='block py-2 text-gray-800 hover:bg-gray-300 hover:opacity-80'
+              className='block text-gray-800 hover:bg-gray-300'
               activeProps={{ className: 'font-bold underline' }}
             >{post.frontmatter.title || 'Untitled'}</Link>
+            <Link to="/posts/$id/delete" params={{ id: String(post.id) }}>delete</Link>
           </li>))}
           </ul>
         </div>

@@ -41,3 +41,20 @@ const postMatter = (post: Post) => {
       }
     });
   })
+  export const updatePost = createServerFn({method: "PUT"})
+  .inputValidator( (data: {id: number; content: string}) => data )
+  .handler(async ({data:{id, content}}) => {
+    return await prisma.post.update({
+      where: { id },
+      data: {
+        content,
+      }
+    });
+  });
+  export const deletePost = createServerFn({method: "GET"})
+  .inputValidator( (data: {id: number}) => data )
+  .handler(async ({data:{id}}) => {
+    return await prisma.post.delete({
+      where: { id },
+    });
+  })
