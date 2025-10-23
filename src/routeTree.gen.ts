@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
 import { Route as PostsIdRouteImport } from './routes/posts.$id'
 import { Route as AuthdPostsNewRouteImport } from './routes/_authd/posts.new'
+import { Route as AuthdPostsIdDeleteRouteImport } from './routes/_authd/posts.$id_.delete'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -63,6 +64,11 @@ const AuthdPostsNewRoute = AuthdPostsNewRouteImport.update({
   path: '/posts/new',
   getParentRoute: () => AuthdRoute,
 } as any)
+const AuthdPostsIdDeleteRoute = AuthdPostsIdDeleteRouteImport.update({
+  id: '/posts/$id_/delete',
+  path: '/posts/$id/delete',
+  getParentRoute: () => AuthdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/posts/$id': typeof PostsIdRoute
   '/posts/': typeof PostsIndexRoute
   '/posts/new': typeof AuthdPostsNewRoute
+  '/posts/$id/delete': typeof AuthdPostsIdDeleteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/posts/$id': typeof PostsIdRoute
   '/posts': typeof PostsIndexRoute
   '/posts/new': typeof AuthdPostsNewRoute
+  '/posts/$id/delete': typeof AuthdPostsIdDeleteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/posts/$id': typeof PostsIdRoute
   '/posts/': typeof PostsIndexRoute
   '/_authd/posts/new': typeof AuthdPostsNewRoute
+  '/_authd/posts/$id_/delete': typeof AuthdPostsIdDeleteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/posts/$id'
     | '/posts/'
     | '/posts/new'
+    | '/posts/$id/delete'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/posts/$id'
     | '/posts'
     | '/posts/new'
+    | '/posts/$id/delete'
   id:
     | '__root__'
     | '/'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/posts/$id'
     | '/posts/'
     | '/_authd/posts/new'
+    | '/_authd/posts/$id_/delete'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,15 +214,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthdPostsNewRouteImport
       parentRoute: typeof AuthdRoute
     }
+    '/_authd/posts/$id_/delete': {
+      id: '/_authd/posts/$id_/delete'
+      path: '/posts/$id/delete'
+      fullPath: '/posts/$id/delete'
+      preLoaderRoute: typeof AuthdPostsIdDeleteRouteImport
+      parentRoute: typeof AuthdRoute
+    }
   }
 }
 
 interface AuthdRouteChildren {
   AuthdPostsNewRoute: typeof AuthdPostsNewRoute
+  AuthdPostsIdDeleteRoute: typeof AuthdPostsIdDeleteRoute
 }
 
 const AuthdRouteChildren: AuthdRouteChildren = {
   AuthdPostsNewRoute: AuthdPostsNewRoute,
+  AuthdPostsIdDeleteRoute: AuthdPostsIdDeleteRoute,
 }
 
 const AuthdRouteWithChildren = AuthdRoute._addFileChildren(AuthdRouteChildren)
