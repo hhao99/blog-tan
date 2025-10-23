@@ -6,7 +6,8 @@ node_modules
 .output
 .DS_Store
 data/tmp
+prisma/data
+prisma/dev.db
 *.lock
-
-
-/generated/prisma
+src/prisma
+dist/
