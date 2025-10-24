@@ -5,7 +5,13 @@ import { useServerFn } from '@tanstack/react-start';
 //tiptap editor 
 import Tiptap from '~/components/tiptap';
 
+//shadcn 
+import { Button } from '~/components/ui/button';
 
+//lucide icon
+import { SaveIcon } from 'lucide-react';
+
+// lib 
 import { createPost } from '~/lib/posts';
 import { fetchUser } from '../_authd';
 
@@ -49,9 +55,11 @@ export function NewPost() {
         </div>
           
        <div className='flex justify-end items-center mr-8'>
-       <button
-         className='bg-blue-400 text-white px-8 py-2 rounded'
-         type="submit" >Create Post</button>
+       <Button
+         arial-label='Submit'
+         type="submit" >
+            <SaveIcon />Create Post
+         </Button>
         </div>
      </form>
     </div>
