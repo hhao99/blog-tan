@@ -1,5 +1,5 @@
 import { useRef, useState, useActionState } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouter} from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 
 //tiptap editor 
@@ -18,14 +18,17 @@ export const Route = createFileRoute('/_authd/posts/new')({
 export function NewPost() { 
   const create = useServerFn(createPost);
   const user = Route.useLoaderData();
-  const frontmatter = '';
+  const router = useRouter();
 
-  const [content,setContent] = useState(frontmatter);
+  const [content,setContent] = useState('');
 
   const handleSubmit = async (state,formData:FormData) => {
     console.log("creating post:", { author_id: user.id, content });
     const result = await create({ data: { author_id: user.id, content } });
-    console.log("Post created:");
+    if(result) {
+      router.invalidate();
+      router.navigate({ href: '/posts' });
+    }
   };
 
   
@@ -34,18 +37,22 @@ export function NewPost() {
     <div className='container m-4 p-4 border-2 border-gray-300'>
       <h1 className='text-2xl text-blue-600 mb-4'>Create New Post</h1>
      <form action={formAction}>
-       <div>
-         <h1>created by {user?.firstname} {user?.lastname} </h1>
+       <div className='flex justify-end mr-4'>
+         <h3 className='text-bold text-sm text-gray-600'>created by {user?.firstname} {user?.lastname} </h3>
        </div>
       
-       <div className='flex flex-col w-4/5 justify-start items-start border-2 border-gray-300 my-4'>
+       <div className='flex flex-col w-full/5 justify-start items-start my-4'>
          <label htmlFor="content">Content</label>
-         <div className='w-full h-96 p-2 border-2 border-gray-200'>
-           <Tiptap content={content} onChange={setContent} />
+         <div className='w-full h-3/4 p-2'>
+           <Tiptap content={content}  onChange={setContent} />
          </div>
+        </div>
           
-       </div>
-       <button type="submit" >Create Post</button>
+       <div className='flex justify-end items-center mr-8'>
+       <button
+         className='bg-blue-400 text-white px-8 py-2 rounded'
+         type="submit" >Create Post</button>
+        </div>
      </form>
     </div>
   )

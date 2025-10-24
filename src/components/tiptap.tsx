@@ -11,7 +11,7 @@ const Tiptap = ({ content, onChange }: { content: string; onChange: (value: stri
         content, // initial content
         editorProps: {
         attributes: {
-          class: 'p-2 prose-sm min-h-60 prose-h1:mb-0 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 focus:outline-none',
+          class: 'p-2 prose-sm min-h-60 p-2 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 focus:outline-none',
           },
         },
         immediatelyRender: false,
@@ -31,7 +31,7 @@ const Tiptap = ({ content, onChange }: { content: string; onChange: (value: stri
             } 
           })
         return (
-          <div>
+          <div  className='w-full h-full border-2 border-gray-200'>
             <EditorContent editor={editor} />
           </div>
         );

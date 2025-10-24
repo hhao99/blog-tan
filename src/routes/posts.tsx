@@ -11,7 +11,7 @@ function PostComponent() {
  const posts = Route.useLoaderData();
   return (
     <main className="flex mt-2 border-1 border-gray-100 flex-row justify-between">
-      <div className='flex flex-col bg-bray-200 h-4/5 w-1/5 '>
+      <div className='flex flex-col bg-bray-200 w-1/4'>
         <h1 className='text-xl text-blue-600 text-center'>Post Index</h1>
         <div className='flex gap-2 p-2'>
           <ul className='list-disc pl-4'>
