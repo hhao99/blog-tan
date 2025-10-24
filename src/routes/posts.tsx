@@ -1,6 +1,14 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { getAllPosts } from '~/lib/posts';
 
+// shadcn 
+import { Button
+ } from '~/components/ui/button';
+
+ // lucide icon
+ import { DeleteIcon } from 'lucide-react';
+
+
 export const Route = createFileRoute('/posts')({
 
   loader: async ()=> await getAllPosts(),
@@ -24,7 +32,11 @@ function PostComponent() {
               className='block text-gray-800 hover:bg-gray-300'
               activeProps={{ className: 'font-bold underline' }}
             >{post.frontmatter.title || 'Untitled'}</Link>
-            <Link to="/posts/$id/delete" params={{ id: String(post.id) }}>delete</Link>
+            <Link to="/posts/$id/delete" params={{ id: String(post.id) }}>
+              <Button size='icon-sm'>
+                <DeleteIcon />
+              </Button>
+            </Link>
           </li>))}
           </ul>
         </div>

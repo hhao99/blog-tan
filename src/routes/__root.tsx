@@ -31,7 +31,6 @@ export const Route = createRootRoute({
   loader: async ()=> {
     const user = await fetchUser();
     if(user) {
-      console.log("Root loader fetched user:", user);
       return { user };
     }
     return null;
