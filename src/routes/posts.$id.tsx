@@ -10,8 +10,8 @@ export const Route = createFileRoute('/posts/$id')({
 function PostComponent() {
     const post = Route.useLoaderData();
   return (
-    <div className='prose w-full h-3/4 mx-auto my-8 p-4 border-2 border-gray-300'>
-      <h1 className='text-3xl text-blue-600 border-b-2 border-gray-300'>{post.frontmatter.title || 'Untitled'}</h1>
+    <div className='prose w-fullmx-auto my-8 p-4'>
+      <h1 className='text-lg text-blue-800 border-b-2 border-gray-300'>{post.frontmatter.title || 'Untitled'}</h1>
       <Remark>{post.content}</Remark>
     </div>
   )
