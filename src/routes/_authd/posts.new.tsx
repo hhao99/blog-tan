@@ -1,13 +1,23 @@
-import { useRef, useState, useActionState } from 'react';
+
 import { createFileRoute, useRouter} from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import { toast } from 'sonner';
+
+
+
+
 
 //tiptap editor 
 import Tiptap from '~/components/tiptap';
 
-//shadcn 
+//shadcn ui
 import { Button } from '~/components/ui/button';
-
+import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '~/components/ui/card'
+import { Label } from '~/components/ui/label';
+import { Field, FieldGroup, FieldLabel } from '~/components/ui/field';
+import { InputGroup, InputGroupAddon, InputGroupText } from '~/components/ui/input-group';
 //lucide icon
 import { SaveIcon } from 'lucide-react';
 
@@ -16,53 +26,86 @@ import { createPost } from '~/lib/posts';
 import { fetchUser } from '../_authd';
 
 
+const newPostSchema = z.object({
+  blog: z.string().min(10, "content should be at lease 10 characters")
+});
+
 export const Route = createFileRoute('/_authd/posts/new')({
-  component: NewPost,
+  component: NewPostForm,
   loader: async ()=> await fetchUser(),
 });
   
-export function NewPost() { 
+export function NewPostForm() { 
   const create = useServerFn(createPost);
   const user = Route.useLoaderData();
   const router = useRouter();
-
-  const [content,setContent] = useState('');
-
-  const handleSubmit = async (state,formData:FormData) => {
-    console.log("creating post:", { author_id: user.id, content });
-    const result = await create({ data: { author_id: user.id, content } });
-    if(result) {
-      router.invalidate();
-      router.navigate({ href: '/posts' });
-    }
-  };
-
   
-  const [state,formAction,isPending] = useActionState(handleSubmit,null)
+ 
+  const form = useForm({
+    defaultValues: {
+      blog: `test`
+    },
+    validators: {
+      onBlur: newPostSchema,
+      onSubmit: newPostSchema,
+    },
+    onSubmit: async ({value}) => {
+      const result = await create({ data: {
+        author_id: user.id,
+        content: value.blog
+      }});
+
+      if(result) {
+        router.invalidate();
+        router.navigate({ href: '/posts'})
+      }
+    }
+  })
+
   return (
-    <div className='container m-4 p-4 border-2 border-gray-300'>
-      <h1 className='text-2xl text-blue-600 mb-4'>Create New Post</h1>
-     <form action={formAction}>
-       <div className='flex justify-end mr-4'>
-         <h3 className='text-bold text-sm text-gray-600'>created by {user?.firstname} {user?.lastname} </h3>
-       </div>
-      
-       <div className='flex flex-col w-full/5 justify-start items-start my-4'>
-         <label htmlFor="content">Content</label>
-         <div className='w-full h-3/4 p-2'>
-           <Tiptap content={content}  onChange={setContent} />
-         </div>
-        </div>
+    <>
+    <form id="new-post-form" onSubmit={ (e)=> {
+          e.preventDefault();
+          form.handleSubmit();
+        }}>
           
-       <div className='flex justify-end items-center mr-8'>
-       <Button
-         arial-label='Submit'
-         type="submit" >
-            <SaveIcon />Create Post
-         </Button>
-        </div>
-     </form>
-    </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Post a new blog</CardTitle>
+            <CardDescription>
+              authorize a new blog to record the idea ...
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FieldGroup>
+            <Label htmlFor='content'>Content:</Label>
+            <form.Field name='blog' 
+              children={(field)=>{
+                return(
+                  <Field data-invalid={!field.state.meta.isValid}>
+                    <FieldLabel htmlFor={field.name}>blog content:</FieldLabel>
+                    <Tiptap content={field.state.value}
+                      onChange={ (content)=> field.handleChange(content) } />   
+                  </Field>
+                )
+              }}
+            />
+            
+        </FieldGroup>
+        <Field orientation='horizontal'>
+          <Button type='button' variant='outline'
+            onClick={ ()=> form.reset()}
+          >reset</Button>
+          <Button type='submit' form='new-post-form'>
+            <SaveIcon/></Button>
+        </Field>
+          </CardContent>
+          <CardFooter>
+
+          </CardFooter>
+        </Card>
+    </form>
+    </>
   )
 
 }
