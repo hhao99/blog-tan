@@ -17,7 +17,6 @@ import { Route as AuthdRouteImport } from './routes/_authd'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
 import { Route as PostsIdRouteImport } from './routes/posts.$id'
-import { Route as AuthdT1RouteImport } from './routes/_authd/t1'
 import { Route as AuthdPostsNewRouteImport } from './routes/_authd/posts.new'
 import { Route as AuthdPostsIdDeleteRouteImport } from './routes/_authd/posts.$id_.delete'
 
@@ -60,11 +59,6 @@ const PostsIdRoute = PostsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => PostsRoute,
 } as any)
-const AuthdT1Route = AuthdT1RouteImport.update({
-  id: '/t1',
-  path: '/t1',
-  getParentRoute: () => AuthdRoute,
-} as any)
 const AuthdPostsNewRoute = AuthdPostsNewRouteImport.update({
   id: '/posts/new',
   path: '/posts/new',
@@ -82,7 +76,6 @@ export interface FileRoutesByFullPath {
   '/logout': typeof LogoutRoute
   '/posts': typeof PostsRouteWithChildren
   '/register': typeof RegisterRoute
-  '/t1': typeof AuthdT1Route
   '/posts/$id': typeof PostsIdRoute
   '/posts/': typeof PostsIndexRoute
   '/posts/new': typeof AuthdPostsNewRoute
@@ -93,7 +86,6 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
-  '/t1': typeof AuthdT1Route
   '/posts/$id': typeof PostsIdRoute
   '/posts': typeof PostsIndexRoute
   '/posts/new': typeof AuthdPostsNewRoute
@@ -107,7 +99,6 @@ export interface FileRoutesById {
   '/logout': typeof LogoutRoute
   '/posts': typeof PostsRouteWithChildren
   '/register': typeof RegisterRoute
-  '/_authd/t1': typeof AuthdT1Route
   '/posts/$id': typeof PostsIdRoute
   '/posts/': typeof PostsIndexRoute
   '/_authd/posts/new': typeof AuthdPostsNewRoute
@@ -121,7 +112,6 @@ export interface FileRouteTypes {
     | '/logout'
     | '/posts'
     | '/register'
-    | '/t1'
     | '/posts/$id'
     | '/posts/'
     | '/posts/new'
@@ -132,7 +122,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/register'
-    | '/t1'
     | '/posts/$id'
     | '/posts'
     | '/posts/new'
@@ -145,7 +134,6 @@ export interface FileRouteTypes {
     | '/logout'
     | '/posts'
     | '/register'
-    | '/_authd/t1'
     | '/posts/$id'
     | '/posts/'
     | '/_authd/posts/new'
@@ -219,13 +207,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIdRouteImport
       parentRoute: typeof PostsRoute
     }
-    '/_authd/t1': {
-      id: '/_authd/t1'
-      path: '/t1'
-      fullPath: '/t1'
-      preLoaderRoute: typeof AuthdT1RouteImport
-      parentRoute: typeof AuthdRoute
-    }
     '/_authd/posts/new': {
       id: '/_authd/posts/new'
       path: '/posts/new'
@@ -244,13 +225,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthdRouteChildren {
-  AuthdT1Route: typeof AuthdT1Route
   AuthdPostsNewRoute: typeof AuthdPostsNewRoute
   AuthdPostsIdDeleteRoute: typeof AuthdPostsIdDeleteRoute
 }
 
 const AuthdRouteChildren: AuthdRouteChildren = {
-  AuthdT1Route: AuthdT1Route,
   AuthdPostsNewRoute: AuthdPostsNewRoute,
   AuthdPostsIdDeleteRoute: AuthdPostsIdDeleteRoute,
 }

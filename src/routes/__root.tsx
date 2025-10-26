@@ -46,7 +46,7 @@ function RootComponent() {
   const { user } = Route.useLoaderData();
   return (
     <RootDocument>
-      <div className="w-full flex bg-background text-foreground flex-col justify-between">
+      <div className="dark w-full flex bg-background text-foreground flex-col justify-between">
         <Header user={user} />
         <main className="w-full h-screen z-1000 mb-10">
           <Outlet />

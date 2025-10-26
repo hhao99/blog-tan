@@ -3,11 +3,11 @@
 import { Link } from '@tanstack/react-router';
 export default function Header({user}) {
     return (
-        <div className="flex bg-gray-200 text-skyblue-800 border-b-1 border-brown-200 justify-between">
+        <div className="flex  border-b-1 border-brown-200 justify-between">
             <Link to='/' className="ml-4 font-bold text-xl">
                 TansStart Blog
             </Link>
-            <nav className="flex bg-gray-300 text-brown-800 space-x-4 mr-4 ">
+            <nav className="flex space-x-4 mr-4 ">
                 {user.id ? (
                     <>
                     <div>
