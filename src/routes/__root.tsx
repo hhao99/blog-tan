@@ -6,7 +6,7 @@ import {
   Scripts,
 } from '@tanstack/react-router';
 import { fetchUser } from './_authd';
-import './style.css';
+import appCss from '~/routes/style.css?url';
 
 import Header from '~/components/layout/header';
 
@@ -27,6 +27,9 @@ export const Route = createRootRoute({
         title: 'TanStack Start Starter',
       },
     ],
+    links: [
+      { rel: 'stylesheet', href: appCss},
+    ]
   }),
   loader: async ()=> {
     const user = await fetchUser();
@@ -43,7 +46,7 @@ function RootComponent() {
   const { user } = Route.useLoaderData();
   return (
     <RootDocument>
-      <div className="w-full flex flex-col justify-between">
+      <div className="w-full flex bg-background text-foreground flex-col justify-between">
         <Header user={user} />
         <main className="w-full h-screen z-1000 mb-10">
           <Outlet />
